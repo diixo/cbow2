@@ -1,7 +1,7 @@
 # cbow2
-CBOW
+**CBOW**
 
-CBOW or Continous bag of words is to use embeddings in order to train a neural network where the context is represented by multiple words for a given target words.
+**CBOW** or **Continous bag of words** is to use embeddings in order to train a neural network where the context is represented by multiple words for a given target words.
 
 For example, we could use “cat” and “tree” as context words for “climbed” as the target word.
 This calls for a modification to the neural network architecture.
@@ -25,8 +25,8 @@ Input dataset for centered **words as keys** inside: `about`, `to`, `study`, `th
 Trained verification input: 
 ```python
 # (['we', 'are', 'to', 'study'], 'about')
-word = predict(['we', 'are', 'to', 'study']) # ='about'
+word = predict(['we', 'are', 'to', 'study'])
 ```
 
-Output:
-'about'
+Output: 
+**word** =`'about'`
