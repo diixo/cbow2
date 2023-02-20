@@ -7,7 +7,7 @@ import string
 import pandas as pd
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-#%matplotlib inline
+
 
 from subprocess import check_output
 
@@ -34,6 +34,7 @@ sentences = sentences.lower()
 words = sentences.split()
 vocab = set(words)
 
+epochs = 100
 vocab_size = len(vocab)
 embed_dim = 10
 context_size = 2
@@ -101,7 +102,7 @@ theta = np.random.uniform(-1, 1, (2 * context_size * embed_dim, vocab_size))
 
 epoch_losses = {}
 
-for epoch in range(80):
+for epoch in range(epochs):
 
     losses = []
 
@@ -120,14 +121,14 @@ for epoch in range(80):
     epoch_losses[epoch] = losses
 
 # Analyze: Plot loss/epoch
-
-ix = np.arange(0, 80)
-
-#fig = plt.figure()
-#fig.suptitle('Epoch/Losses', fontsize=20)
-#plt.plot(ix,[epoch_losses[i][0] for i in ix])
-#plt.xlabel('Epochs', fontsize=12)
-#plt.ylabel('Losses', fontsize=12)
+def analyze():
+    ix = np.arange(0, epochs)
+    fig = plt.figure()
+    fig.suptitle('Epoch/Losses', fontsize=20)
+    plt.plot(ix,[epoch_losses[i][0] for i in ix])
+    plt.xlabel('Epochs', fontsize=12)
+    plt.ylabel('Losses', fontsize=12)
+    fig.show()
 
 
 def predict(words):
@@ -136,6 +137,8 @@ def predict(words):
     word = ix_to_word[np.argmax(preds[-1])]
 
     return word
+
+analyze()
 
 # (['we', 'are', 'to', 'study'], 'about')
 w = predict(['we', 'are', 'to', 'study'])
