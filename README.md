@@ -12,3 +12,21 @@ The CBOW architecture is pretty simple contains :
 - the word embeddings as inputs (idx)
 - the linear model as the hidden layer
 - the log_softmax as the output
+
+Input sentense: 
+```
+sentence = "we are about to study the idea of computational"
+```
+Input dataset for centered **words as keys** inside: `about`, `to`, `study`, `the`, `idea`, `of`:
+```
+[(['we', 'are', 'to', 'study'], 'about'), (['are', 'about', 'study', 'the'], 'to'), (['about', 'to', 'the', 'idea'], 'study'), (['to', 'study', 'idea', 'of'], 'the'), (['study', 'the', 'of', 'computational'], 'idea')]
+```
+
+Trained verification input: 
+```python
+# (['we', 'are', 'to', 'study'], 'about')
+word = predict(['we', 'are', 'to', 'study']) # ='about'
+```
+
+Output:
+'about'
