@@ -1,5 +1,5 @@
 # cbow2
-**CBOW**
+### CBOW
 
 **CBOW** or **Continous bag of words** is to use embeddings in order to train a neural network where the context is represented by multiple words for a given target words.
 
@@ -13,11 +13,11 @@ The CBOW architecture is pretty simple contains :
 - the linear model as the hidden layer
 - the log_softmax as the output
 
-Input sentense: 
+### Input:
 ```
 sentence = "we are about to study the idea of computational"
 ```
-Input dataset for centered **words as keys** inside: `about`, `to`, `study`, `the`, `idea`, `of`:
+Input dataset is context words around centered **key**: [`context<--key`, `context<-key`, `key`, `key->context`, `key-->context`] in form **([context1, context2, contextN...], key)**:
 ```
 [(['we', 'are', 'to', 'study'], 'about'), (['are', 'about', 'study', 'the'], 'to'), (['about', 'to', 'the', 'idea'], 'study'), (['to', 'study', 'idea', 'of'], 'the'), (['study', 'the', 'of', 'computational'], 'idea')]
 ```
@@ -28,5 +28,5 @@ Trained verification input:
 word = predict(['we', 'are', 'to', 'study'])
 ```
 
-Output: 
+### Output: 
 **word** =`'about'`
