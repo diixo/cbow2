@@ -33,13 +33,19 @@ class Sentencizer: #from NLPTools
             work_sentence = work_sentence.replace(character, character + "" + self._delimiter_token)
         self.sentences = [x.strip().lower() for x in work_sentence.split(self._delimiter_token) if x !='']
 
-        #tokens = []
-        #token_boundaries = [' ', ',']
+        tokens = []
+        punctuations = string.punctuation
+        token_boundaries = [' ', ',']
 
-        #for sentence in self.sentences:
-        #    for delimiter in token_boundaries:
-        #        work_sentence = work_sentence.replace(delimiter, self._delimiter_token)
-        #        #tokens = [x.strip() for x in work_sentence.split(self._delimiter_token) if x != '']
+        for work_sentence in self.sentences:
+            for punctuation in punctuations:
+                sentence = work_sentence.replace(punctuation, " " + punctuation + " ")
+
+            for delimiter in token_boundaries:
+                work_sentence = work_sentence.replace(delimiter, self._delimiter_token)
+
+            tokens = [x.strip() for x in work_sentence.split(self._delimiter_token) if (x != '' and x not in self._stopwords)]
+            print(tokens)
 
     def __iter__(self):
         return self
@@ -60,13 +66,6 @@ sentences = """We are about to study the idea of computational process.
  we conjure the spirits of the computer with our spells."""
 
 sentencized = Sentencizer(sentences)
-
-def text_preprocess(series, stemmer, stopwords):
-    df = series.str.replace("\n\t",  " ")
-    df = df.str.replace(r"[^a-zA-Z ]+", "")
-    df = df.str.lower()
-    df = df.apply(lambda x: ' '.join([stemmer.stem(item) for item in x.split() if item not in stopwords]))
-    return df
 
 # remove special characters
 sentences = re.sub('[^A-Za-z0-9]+', ' ', sentences)
