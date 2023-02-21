@@ -33,19 +33,23 @@ class Sentencizer: #from NLPTools
             work_sentence = work_sentence.replace(character, character + "" + self._delimiter_token)
         self.sentences = [x.strip().lower() for x in work_sentence.split(self._delimiter_token) if x !='']
 
-        tokens = []
+        work_sentence = ""
         punctuations = string.punctuation
-        token_boundaries = [' ', ',']
+        token_boundaries = [' ', ',', '.']
+        vocab = set()
 
-        for work_sentence in self.sentences:
+
+        for i in range(len(self.sentences)):
             for punctuation in punctuations:
-                sentence = work_sentence.replace(punctuation, " " + punctuation + " ")
+                work_sentence = self.sentences[i].replace(punctuation, " " + punctuation + " ")
 
             for delimiter in token_boundaries:
                 work_sentence = work_sentence.replace(delimiter, self._delimiter_token)
 
-            tokens = [x.strip() for x in work_sentence.split(self._delimiter_token) if (x != '' and x not in self._stopwords)]
-            print(tokens)
+            self.sentences[i] = [x.strip() for x in work_sentence.split(self._delimiter_token) if (x != '' and x not in self._stopwords)]
+            vocab.update(set(self.sentences[i]))
+            print(self.sentences[i])
+        #print(vocab)
 
     def __iter__(self):
         return self
@@ -77,6 +81,7 @@ sentences = re.sub(r'(?:^| )\w(?:$| )', ' ', sentences).strip()
 sentences = sentences.lower()
 
 words = sentences.split()
+
 vocab = set(words)
 
 epochs = 100
