@@ -73,7 +73,7 @@ tokenizer = Sentencizer(sentences)
 epochs = 100
 vocab_size = len(tokenizer.vocab)
 embed_dim = 10
-context_size = 2
+context_size = 2 # is half of context-window: [(2*context_size), target]
 
 word_to_ix = {word: i for i, word in enumerate(tokenizer.vocab)}
 ix_to_word = {i: word for i, word in enumerate(tokenizer.vocab)}
