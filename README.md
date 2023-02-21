@@ -17,7 +17,7 @@ The CBOW architecture is pretty simple contains :
 ```
 sentence = "we are about to study the idea of computational"
 ```
-Input is context words around centered target-word: [`context <--`, `context <-`, **target**, `context ->`, `context -->`] in form **([context], target)**:
+Input is context words around centered **target** word: [`context <--`, `context <-`, **target**, `context ->`, `context -->`] in form **([context], target)**:
 ```
 [(['we', 'are', 'to', 'study'], 'about'), (['are', 'about', 'study', 'the'], 'to'), (['about', 'to', 'the', 'idea'], 'study'), (['to', 'study', 'idea', 'of'], 'the'), (['study', 'the', 'of', 'computational'], 'idea')]
 ```
