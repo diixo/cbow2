@@ -168,13 +168,18 @@ def analyze():
     plt.ylabel('Losses', fontsize=12)
     fig.show()
 
-
 def predict(words):
     context_idxs = np.array([word_to_ix[w] for w in words])
     preds = forward(context_idxs, theta)
     word = ix_to_word[np.argmax(preds[-1])]
-
     return word
+
+def accuracy():
+    wrong = 0
+    for context, target in data:
+        if (predict(context) != target):
+            wrong += 1
+    return (1 - (wrong / len(data)))
 
 analyze()
 
@@ -182,15 +187,4 @@ analyze()
 w = predict(['evolve', 'processes', 'abstract', 'things'])
 print(w)
 
-
-def accuracy():
-    wrong = 0
-
-    for context, target in data:
-        if (predict(context) != target):
-            wrong += 1
-
-    return (1 - (wrong / len(data)))
-
 print(accuracy())
-
