@@ -73,7 +73,7 @@ tokenizer = Sentencizer(sentences)
 epochs = 100
 vocab_size = len(tokenizer.vocab)
 embed_dim = 10
-context_size = 2 # is half of context-window: [(2*context_size), target]
+context_size = 2 # or 1, is half of context-window: [(2*context_size), target]
 
 word_to_ix = {word: i for i, word in enumerate(tokenizer.vocab)}
 ix_to_word = {i: word for i, word in enumerate(tokenizer.vocab)}
@@ -82,10 +82,22 @@ ix_to_word = {i: word for i, word in enumerate(tokenizer.vocab)}
 data = []
 
 for sentence in tokenizer.sentences:
-    for i in range(2, len(sentence) - 2):
-        context = [sentence[i - 2], sentence[i - 1], sentence[i + 1], sentence[i + 2]]
-        target = sentence[i]
-        data.append((context, target))
+    if (context_size == 2):
+        for i in range(2, len(sentence) - 2):
+            context = [sentence[i - 2], sentence[i - 1], sentence[i + 1], sentence[i + 2]]
+            target = sentence[i]
+            data.append((context, target))
+
+    if (context_size == 1):
+        for i in range(0, len(sentence) - 2):
+            context = [sentence[i + 1], sentence[i + 2]]
+            target = sentence[i]
+            data.append((context, target))
+
+            if (i > 0):
+                context = [sentence[i - 1], sentence[i + 1]]
+                target = sentence[i]
+                data.append((context, target))
 print(data[:10])
 
 # Embeddings
@@ -131,7 +143,7 @@ def backward(preds, theta, target_idxs):
 
     return dw
 
-def optimize(theta, grad, lr=0.03):
+def optimize(theta, grad, lr = 0.03):
     theta -= grad * lr
     return theta
 
