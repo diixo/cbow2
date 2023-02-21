@@ -30,3 +30,7 @@ word = predict(['we', 'are', 'to', 'study'])
 
 ### Output: 
 **word** =`'about'`
+
+# Reference
+
+[nlp-starter-continuous-bag-of-words-cbow](https://www.kaggle.com/code/alincijov/nlp-starter-continuous-bag-of-words-cbow)
