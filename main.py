@@ -8,7 +8,6 @@ import pandas as pd
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
-
 from subprocess import check_output
 
 # - the word embeddings as inputs (idx)
@@ -48,8 +47,8 @@ class Sentencizer: #from NLPTools
 
             self.sentences[i] = [x.strip() for x in work_sentence.split(self._delimiter_token) if (x != '' and x not in self._stopwords)]
             self.vocab.update(set(self.sentences[i]))
-            print(self.sentences[i])
-        print(self.vocab)
+            #print(self.sentences[i])
+        #print(self.vocab)
 
     def __iter__(self):
         return self
@@ -69,39 +68,28 @@ sentences = """We are about to study the idea of computational process.
  called a program. People create programs to direct processes. In effect,
  we conjure the spirits of the computer with our spells."""
 
-sentencized = Sentencizer(sentences)
-
-# remove special characters
-sentences = re.sub('[^A-Za-z0-9]+', ' ', sentences)
-
-# remove 1 letter words
-sentences = re.sub(r'(?:^| )\w(?:$| )', ' ', sentences).strip()
-
-# lower all characters
-sentences = sentences.lower()
-
-words = sentences.split()
-
-vocab = set(words)
+tokenizer = Sentencizer(sentences)
 
 epochs = 100
-vocab_size = len(vocab)
+vocab_size = len(tokenizer.vocab)
 embed_dim = 10
 context_size = 2
 
-word_to_ix = {word: i for i, word in enumerate(vocab)}
-ix_to_word = {i: word for i, word in enumerate(vocab)}
+word_to_ix = {word: i for i, word in enumerate(tokenizer.vocab)}
+ix_to_word = {i: word for i, word in enumerate(tokenizer.vocab)}
 
 # data - [(context), target]
 data = []
-for i in range(2, len(words) - 2):
-    context = [words[i - 2], words[i - 1], words[i + 1], words[i + 2]]
-    target = words[i]
-    data.append((context, target))
-print(data[:5])
+
+for sentence in tokenizer.sentences:
+    for i in range(2, len(sentence) - 2):
+        context = [sentence[i - 2], sentence[i - 1], sentence[i + 1], sentence[i + 2]]
+        target = sentence[i]
+        data.append((context, target))
+print(data[:10])
 
 # Embeddings
-embeddings =  np.random.random_sample((vocab_size, embed_dim))
+embeddings = np.random.random_sample((vocab_size, embed_dim))
 
 # Linear-model
 def linear(m, theta):
@@ -190,8 +178,8 @@ def predict(words):
 
 analyze()
 
-# (['we', 'are', 'to', 'study'], 'about')
-w = predict(['we', 'are', 'to', 'study'])
+# (['evolve', 'processes', 'abstract', 'things'], 'manipulate')
+w = predict(['evolve', 'processes', 'abstract', 'things'])
 print(w)
 
 
