@@ -24,6 +24,7 @@ class Sentencizer: #from NLPTools
         self._delimiter_token = delimiter_token
         self._index = 0
         self._stopwords = [line.replace('\n', '') for line in open("stopwords.txt", 'r', encoding='utf-8').readlines()]
+        self.vocab = set()
         self._sentencize()
 
     def _sentencize(self):
@@ -36,7 +37,6 @@ class Sentencizer: #from NLPTools
         work_sentence = ""
         punctuations = string.punctuation
         token_boundaries = [' ', ',', '.']
-        vocab = set()
 
 
         for i in range(len(self.sentences)):
@@ -47,9 +47,9 @@ class Sentencizer: #from NLPTools
                 work_sentence = work_sentence.replace(delimiter, self._delimiter_token)
 
             self.sentences[i] = [x.strip() for x in work_sentence.split(self._delimiter_token) if (x != '' and x not in self._stopwords)]
-            vocab.update(set(self.sentences[i]))
+            self.vocab.update(set(self.sentences[i]))
             print(self.sentences[i])
-        #print(vocab)
+        print(self.vocab)
 
     def __iter__(self):
         return self
