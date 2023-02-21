@@ -15,12 +15,58 @@ from subprocess import check_output
 # - the linear model as the hidden layer
 # - the log_softmax as the output
 
-sentences = """We are about to study the idea of a computational process.
-Computational processes are abstract beings that inhabit computers.
-As they evolve, processes manipulate other abstract things called data.
-The evolution of a process is directed by a pattern of rules
-called a program. People create programs to direct processes. In effect,
-we conjure the spirits of the computer with our spells."""
+class Sentencizer: #from NLPTools
+
+    def __init__(self, input_text, split_characters=['.','?','!',':'], delimiter_token='<split>'):
+        self.sentences = []
+        self.raw = str(input_text)
+        self._split_characters = split_characters
+        self._delimiter_token = delimiter_token
+        self._index = 0
+        self._stopwords = [line.replace('\n', '') for line in open("stopwords.txt", 'r', encoding='utf-8').readlines()]
+        self._sentencize()
+
+    def _sentencize(self):
+        work_sentence = self.raw
+        for character in self._split_characters:
+            work_sentence = work_sentence.replace("\n",  " ")
+            work_sentence = work_sentence.replace(character, character + "" + self._delimiter_token)
+        self.sentences = [x.strip().lower() for x in work_sentence.split(self._delimiter_token) if x !='']
+
+        #tokens = []
+        #token_boundaries = [' ', ',']
+
+        #for sentence in self.sentences:
+        #    for delimiter in token_boundaries:
+        #        work_sentence = work_sentence.replace(delimiter, self._delimiter_token)
+        #        #tokens = [x.strip() for x in work_sentence.split(self._delimiter_token) if x != '']
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self._index < len(self.sentences):
+            result = self.sentences[self._index]
+            self._index += 1
+            return result
+        raise StopIteration
+
+
+sentences = """We are about to study the idea of computational process.
+ Computational processes are abstract beings that inhabit computers.
+ As they evolve, processes manipulate other abstract things called data.
+ The evolution of a process is directed by a pattern of rules
+ called a program. People create programs to direct processes. In effect,
+ we conjure the spirits of the computer with our spells."""
+
+sentencized = Sentencizer(sentences)
+
+def text_preprocess(series, stemmer, stopwords):
+    df = series.str.replace("\n\t",  " ")
+    df = df.str.replace(r"[^a-zA-Z ]+", "")
+    df = df.str.lower()
+    df = df.apply(lambda x: ' '.join([stemmer.stem(item) for item in x.split() if item not in stopwords]))
+    return df
 
 # remove special characters
 sentences = re.sub('[^A-Za-z0-9]+', ' ', sentences)
