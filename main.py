@@ -16,7 +16,7 @@ from subprocess import check_output
 
 class Sentencizer: #from NLPTools
 
-    def __init__(self, split_characters=['.','?','!',':', ';', ','], delimiter_token='<split>'):
+    def __init__(self, split_characters=['.', '?', '!', ':', ';', ','], delimiter_token='<split>'):
         self.sentences = []
         self._split_characters = split_characters
         self._delimiter_token = delimiter_token
@@ -25,30 +25,31 @@ class Sentencizer: #from NLPTools
         self.vocab = set()
 
     def sentencize(self, input_line):
+        work_sentence = input_line.strip()
         sentences = []
-        work_sentence = input_line
+
+        if (work_sentence == ""):
+            return
+
         for character in self._split_characters:
             work_sentence = work_sentence.replace("\n",  " ")
             work_sentence = work_sentence.replace(character, character + "" + self._delimiter_token)
+
         sentences = [x.strip().lower() for x in work_sentence.split(self._delimiter_token) if x !='']
 
-        punctuations = "()#-[]"   # string.punctuation
         token_boundaries = [' ', ',', '.']
-
 
         for i in range(len(sentences)):
             work_sentence = sentences[i]
-            for punctuation in punctuations:
-                work_sentence = work_sentence.replace(punctuation, " " + self._delimiter_token + " ")
 
             for delimiter in token_boundaries:
                 work_sentence = work_sentence.replace(delimiter, self._delimiter_token)
 
-            sentences[i] = [x.strip() for x in work_sentence.split(self._delimiter_token)
+            sentences[i] = [x.strip().strip(string.punctuation) for x in work_sentence.split(self._delimiter_token)
                 if (x != '' and x not in self._stopwords and not x.isdigit())]
 
             if (len(sentences[i]) > 0):
-                print(sentences[i])
+                #print(sentences[i])
                 self.sentences.append(sentences[i])
                 self.vocab.update(set(sentences[i]))
         #print(self.vocab)
@@ -87,6 +88,7 @@ sentences = """We are about to study the idea of computational process.
 tokenizer = Sentencizer()
 tokenizer.sentencize(sentences)
 #tokenizer.readFile("train-nn.txt")
+#print(tokenizer.vocab)
 
 epochs = 100
 vocab_size = len(tokenizer.vocab)
