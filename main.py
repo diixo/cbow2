@@ -16,18 +16,16 @@ from subprocess import check_output
 
 class Sentencizer: #from NLPTools
 
-    def __init__(self, input_text, split_characters=['.','?','!',':'], delimiter_token='<split>'):
+    def __init__(self, split_characters=['.','?','!',':', ';'], delimiter_token='<split>'):
         self.sentences = []
-        self.raw = str(input_text)
         self._split_characters = split_characters
         self._delimiter_token = delimiter_token
         self._index = 0
         self._stopwords = [line.replace('\n', '') for line in open("stopwords.txt", 'r', encoding='utf-8').readlines()]
         self.vocab = set()
-        self._sentencize()
 
-    def _sentencize(self):
-        work_sentence = self.raw
+    def sentencize(self, input_text):
+        work_sentence = input_text
         for character in self._split_characters:
             work_sentence = work_sentence.replace("\n",  " ")
             work_sentence = work_sentence.replace(character, character + "" + self._delimiter_token)
@@ -45,7 +43,8 @@ class Sentencizer: #from NLPTools
             for delimiter in token_boundaries:
                 work_sentence = work_sentence.replace(delimiter, self._delimiter_token)
 
-            self.sentences[i] = [x.strip() for x in work_sentence.split(self._delimiter_token) if (x != '' and x not in self._stopwords)]
+            self.sentences[i] = [x.strip() for x in work_sentence.split(self._delimiter_token)
+                if (x != '' and x not in self._stopwords and not x.isdigit())]
             self.vocab.update(set(self.sentences[i]))
             #print(self.sentences[i])
         #print(self.vocab)
@@ -69,6 +68,7 @@ sentences = """We are about to study the idea of computational process.
  we conjure the spirits of the computer with our spells."""
 
 tokenizer = Sentencizer(sentences)
+tokenizer.sentencize()
 
 epochs = 100
 vocab_size = len(tokenizer.vocab)
