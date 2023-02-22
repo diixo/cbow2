@@ -70,9 +70,9 @@ class Sentencizer: #from NLPTools
             line = f.readline()
             if not line:
                 break;
-            count+=1
 
-            self.sentences(line)
+            count+=1
+            self.sentencize(line)
 
         f.close();
 
@@ -85,6 +85,7 @@ sentences = """We are about to study the idea of computational process.
 
 tokenizer = Sentencizer()
 tokenizer.sentencize(sentences)
+#tokenizer.readFile("train-nn.txt")
 
 epochs = 100
 vocab_size = len(tokenizer.vocab)
