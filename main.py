@@ -16,7 +16,7 @@ from subprocess import check_output
 
 class Sentencizer: #from NLPTools
 
-    def __init__(self, split_characters=['.','?','!',':', ';'], delimiter_token='<split>'):
+    def __init__(self, split_characters=['.','?','!',':', ';', ','], delimiter_token='<split>'):
         self.sentences = []
         self._split_characters = split_characters
         self._delimiter_token = delimiter_token
@@ -32,14 +32,14 @@ class Sentencizer: #from NLPTools
             work_sentence = work_sentence.replace(character, character + "" + self._delimiter_token)
         sentences = [x.strip().lower() for x in work_sentence.split(self._delimiter_token) if x !='']
 
-        work_sentence = ""
-        punctuations = string.punctuation
+        punctuations = "()#-[]"   # string.punctuation
         token_boundaries = [' ', ',', '.']
 
 
         for i in range(len(sentences)):
+            work_sentence = sentences[i]
             for punctuation in punctuations:
-                work_sentence = sentences[i].replace(punctuation, " " + punctuation + " ")
+                work_sentence = work_sentence.replace(punctuation, " " + self._delimiter_token + " ")
 
             for delimiter in token_boundaries:
                 work_sentence = work_sentence.replace(delimiter, self._delimiter_token)
@@ -47,9 +47,10 @@ class Sentencizer: #from NLPTools
             sentences[i] = [x.strip() for x in work_sentence.split(self._delimiter_token)
                 if (x != '' and x not in self._stopwords and not x.isdigit())]
 
-            #print(sentences[i])
-            self.sentences.append(sentences[i])
-            self.vocab.update(set(sentences[i]))
+            if (len(sentences[i]) > 0):
+                print(sentences[i])
+                self.sentences.append(sentences[i])
+                self.vocab.update(set(sentences[i]))
         #print(self.vocab)
 
     def __iter__(self):
