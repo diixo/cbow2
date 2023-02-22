@@ -24,29 +24,32 @@ class Sentencizer: #from NLPTools
         self._stopwords = [line.replace('\n', '') for line in open("stopwords.txt", 'r', encoding='utf-8').readlines()]
         self.vocab = set()
 
-    def sentencize(self, input_text):
-        work_sentence = input_text
+    def sentencize(self, input_line):
+        sentences = []
+        work_sentence = input_line
         for character in self._split_characters:
             work_sentence = work_sentence.replace("\n",  " ")
             work_sentence = work_sentence.replace(character, character + "" + self._delimiter_token)
-        self.sentences = [x.strip().lower() for x in work_sentence.split(self._delimiter_token) if x !='']
+        sentences = [x.strip().lower() for x in work_sentence.split(self._delimiter_token) if x !='']
 
         work_sentence = ""
         punctuations = string.punctuation
         token_boundaries = [' ', ',', '.']
 
 
-        for i in range(len(self.sentences)):
+        for i in range(len(sentences)):
             for punctuation in punctuations:
-                work_sentence = self.sentences[i].replace(punctuation, " " + punctuation + " ")
+                work_sentence = sentences[i].replace(punctuation, " " + punctuation + " ")
 
             for delimiter in token_boundaries:
                 work_sentence = work_sentence.replace(delimiter, self._delimiter_token)
 
-            self.sentences[i] = [x.strip() for x in work_sentence.split(self._delimiter_token)
+            sentences[i] = [x.strip() for x in work_sentence.split(self._delimiter_token)
                 if (x != '' and x not in self._stopwords and not x.isdigit())]
-            self.vocab.update(set(self.sentences[i]))
-            #print(self.sentences[i])
+
+            #print(sentences[i])
+            self.sentences.append(sentences[i])
+            self.vocab.update(set(sentences[i]))
         #print(self.vocab)
 
     def __iter__(self):
@@ -59,6 +62,19 @@ class Sentencizer: #from NLPTools
             return result
         raise StopIteration
 
+    def readFile(self, filename):
+
+        f = open(filename, 'r', encoding='utf-8')
+        count = 0;
+        while True:
+            line = f.readline()
+            if not line:
+                break;
+            count+=1
+
+            self.sentences(line)
+
+        f.close();
 
 sentences = """We are about to study the idea of computational process.
  Computational processes are abstract beings that inhabit computers.
@@ -67,8 +83,8 @@ sentences = """We are about to study the idea of computational process.
  called a program. People create programs to direct processes. In effect,
  we conjure the spirits of the computer with our spells."""
 
-tokenizer = Sentencizer(sentences)
-tokenizer.sentencize()
+tokenizer = Sentencizer()
+tokenizer.sentencize(sentences)
 
 epochs = 100
 vocab_size = len(tokenizer.vocab)
