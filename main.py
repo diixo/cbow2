@@ -92,7 +92,7 @@ class Sentencizer: #from NLPTools
 
         f.close();
         self.vocab = sorted(self.vocab)
-        self.vocab_freq_sorted = sorted(self.vocab_freq.items(), key=itemgetter(1))
+        self.vocab_freq_sorted = sorted(self.vocab_freq.items(), key=itemgetter(1), reverse=True)
 
 sentences = """We are about to study the idea of computational process.
  Computational processes are abstract beings that inhabit computers.
@@ -102,13 +102,13 @@ sentences = """We are about to study the idea of computational process.
  we conjure the spirits of the computer with our spells."""
 
 tokenizer = Sentencizer()
-tokenizer.sentencize(sentences)
-#tokenizer.readFile("train-nn.txt")
+#tokenizer.sentencize(sentences)
+tokenizer.readFile("train-nn.txt")
 #print(tokenizer.vocab_freq_sorted)
 
 epochs = 100
 vocab_size = len(tokenizer.vocab)
-embed_dim = 10
+embed_dim = 30  #sqrt(tokenizer.sentences.sz)
 context_size = 2 # or 1, is half of context-window: [(2*context_size), target]
 
 word_to_ix = {word: i for i, word in enumerate(tokenizer.vocab)}
@@ -160,7 +160,7 @@ def log_softmax_crossentropy_with_logits(logits, target):
 
     softmax = np.exp(logits) / np.exp(logits).sum(axis=-1, keepdims=True)
 
-    return (- out + softmax) / logits.shape[0]
+    return (-out + softmax) / logits.shape[0]
 
 # Forward propagation
 def forward(context_idxs, theta):
@@ -189,7 +189,6 @@ theta = np.random.uniform(-1, 1, (2 * context_size * embed_dim, vocab_size))
 epoch_losses = {}
 
 for epoch in range(epochs):
-
     losses = []
 
     for context, target in data:
@@ -207,7 +206,7 @@ for epoch in range(epochs):
     epoch_losses[epoch] = losses
 
 # Analyze: Plot loss/epoch
-def analyze():
+def plot_loss():
     ix = np.arange(0, epochs)
     fig = plt.figure()
     fig.suptitle('Epoch/Losses', fontsize=20)
@@ -222,6 +221,18 @@ def predict(words):
     word = ix_to_word[np.argmax(preds[-1])]
     return word
 
+def verify():
+    sz = len(data)
+    success = 0;
+    for context, target in data:
+        context_idxs = np.array([word_to_ix[w] for w in context])
+        preds = forward(context_idxs, theta)
+        word_id = np.argmax(preds[-1])
+        word = ix_to_word[word_id]
+        target_id = word_to_ix[target]
+        if (word_id == target_id) : success += 1
+    print("sucess:", str(100.0 * success/sz))
+
 def accuracy():
     wrong = 0
     for context, target in data:
@@ -229,7 +240,9 @@ def accuracy():
             wrong += 1
     return (1 - (wrong / len(data)))
 
-analyze()
+plot_loss()
+
+verify()
 
 # (['evolve', 'processes', 'abstract', 'things'], 'manipulate')
 w = predict(['evolve', 'processes', 'abstract', 'things'])
