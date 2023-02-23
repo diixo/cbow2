@@ -45,13 +45,17 @@ class Sentencizer: #from NLPTools
             for delimiter in token_boundaries:
                 work_sentence = work_sentence.replace(delimiter, self._delimiter_token)
 
-            sentences[i] = [x.strip().strip(string.punctuation) for x in work_sentence.split(self._delimiter_token)
-                if (x != '' and x not in self._stopwords and not x.isdigit())]
+            sentences[i] = [x.strip() for x in work_sentence.split(self._delimiter_token) if (x != '')]
 
-            if (len(sentences[i]) > 0):
-                #print(sentences[i])
-                self.sentences.append(sentences[i])
-                self.vocab.update(set(sentences[i]))
+            work_sentence = []
+            for w in sentences[i]:
+                w = w.strip(string.punctuation)
+                if (w != '' and w not in self._stopwords and not w.isdigit()): work_sentence.append(w)
+
+            if (len(work_sentence) > 0):
+                #print(work_sentence)
+                self.sentences.append(work_sentence)
+                self.vocab.update(set(work_sentence))
         #print(self.vocab)
 
     def __iter__(self):
@@ -77,6 +81,7 @@ class Sentencizer: #from NLPTools
             self.sentencize(line)
 
         f.close();
+        self.vocab = sorted(self.vocab)
 
 sentences = """We are about to study the idea of computational process.
  Computational processes are abstract beings that inhabit computers.
