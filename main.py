@@ -117,6 +117,7 @@ ix_to_word = {i: word for i, word in enumerate(tokenizer.vocab)}
 # data - [(context), target]
 data = []
 
+############
 for sentence in tokenizer.sentences:
     if (context_size == 2):
         for i in range(2, len(sentence) - 2):
@@ -134,7 +135,9 @@ for sentence in tokenizer.sentences:
                 context = [sentence[i - 1], sentence[i + 1]]
                 target = sentence[i]
                 data.append((context, target))
-print(data[:10])
+
+############
+print(str(len(data)))
 
 # Embeddings
 embeddings = np.random.random_sample((vocab_size, embed_dim))
@@ -187,9 +190,11 @@ def optimize(theta, grad, lr = 0.03):
 theta = np.random.uniform(-1, 1, (2 * context_size * embed_dim, vocab_size))
 
 epoch_losses = {}
+success = []
 
 for epoch in range(epochs):
     losses = []
+    hits = 0
 
     for context, target in data:
         context_idxs = np.array([word_to_ix[w] for w in context])
@@ -203,7 +208,13 @@ for epoch in range(epochs):
         grad = backward(preds, theta, target_idxs)
         theta = optimize(theta, grad, lr=0.03)
 
+        ##########################################
+        word_id = np.argmax(preds[-1])
+        if (word_id == word_to_ix[target]): hits += 1
+        ##########################################
+
     epoch_losses[epoch] = losses
+    success.append(hits/len(data)*100.0)
 
 # Analyze: Plot loss/epoch
 def plot_loss():
@@ -213,6 +224,15 @@ def plot_loss():
     plt.plot(ix,[epoch_losses[i][0] for i in ix])
     plt.xlabel('Epochs', fontsize=12)
     plt.ylabel('Losses', fontsize=12)
+    fig.show()
+
+def plot_precision():
+    ix = np.arange(0, epochs)
+    fig = plt.figure()
+    fig.suptitle('Epoch/Precision%, '+str(int(success[epochs-1])), fontsize=20)
+    plt.plot(ix,[success[i] for i in ix])
+    plt.xlabel('Epochs', fontsize=12)
+    plt.ylabel('Precision,%', fontsize=12)
     fig.show()
 
 def predict(words):
@@ -241,6 +261,7 @@ def accuracy():
     return (1 - (wrong / len(data)))
 
 plot_loss()
+plot_precision()
 
 verify()
 
