@@ -207,3 +207,46 @@ In this paper, we have proposed a deep feature-based text clustering (DFTC ) fra
 
 Moreover, a text clustering results explanation (TCRE ) model is proposed to describe the semantics of the clustering results and provide a qualitative method to help the user analyze the quality of the clustering results. The TCRE model not only demonstrates why DFTC framework models outperform the best-compared methods but also sheds light on why a deep learning-based deep feature extractor can lead to performance improvements. We reveal evidence for why BiLSTMs work well for the extraction of text semantics: the reasoning is based on an inverted pyramid style of writing. However, our current text clustering model is not an end-to-end approach; hence, in the future, we will explore an end-to-end deep text clustering model.
 
+9. References
+
+[1] Self organization of a massive document collection
+[2] A survey of text clustering algorithms, in Mining Text Data
+[3] A content-based recommender system for computer science publications, Knowledge-Based System.
+[4] Text clustering with seeds affinity propagation
+[5] Short text conceptualization using a probabilistic knowledge-base
+[6] Latent Dirichlet allocation
+[7] A Dirichlet multinomial mixture model-based approach for short text clustering
+[8] Advances in natural language processing
+[9] Hierarchical multi-label text classification: An attention-based recurrent network approach
+[10] An analysis of the influence of deep neural network (DNN) topology in bottleneck feature based language recognition
+[11] Neural machine translation by jointly learning to align and translate
+[12] Self-Taught convolutional neural networks for short text clustering
+[13] Semi-supervised clustering for short text via deep representation learning
+[14] Ontology-based semantic similarity: A new feature-based approach
+[15] Supervised learning of universal sentence representations from natural language inference data
+[16] Deep contextualized word representations
+[17] Efficient estimation of word representations in vector space
+[18] A survey on transfer learning
+[19] How transferable are features in deep neural networks
+[20] Universal language model fine-tuning for text classification
+[21] BERT: Pre-training of deep bidirectional transformers for language understanding
+[22] Language models are unsupervised multitask learners
+[23] Deep learning in neural networks: An overview
+[24] Unsupervised deep embedding for clustering analysis
+[25] Improved deep embedded clustering with local structure preservation
+[26] Towards K-means-friendly spaces: Simultaneous deep learning and clustering
+[27] Variational deep embedding: An unsupervised and generative approach to clustering
+[28] RNNLM - Recurrent neural network language modeling toolkit
+[29] LSTM - Long short-term memory
+[30] Generating sequences with recurrent neural networks
+[31] Regularizing and optimizing LSTM language models
+[32] An analysis of neural language modeling at multiple scales
+[33] Layer normalization
+[34] Text understanding from scratch
+[35] Locally consistent concept factorization for document clustering
+[36] Document clustering based on non-negative matrix factorization
+[37] Principal component analysis for clustering gene expression data
+[38] Finding scientific topics
+[39] Visualizing data using t-SNE
+[40] The Inverted Pyramid: An Introduction to a Semiotics of Media Language
+
