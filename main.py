@@ -7,6 +7,7 @@ import string
 import pandas as pd
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+from operator import itemgetter
 
 from subprocess import check_output
 
@@ -23,6 +24,8 @@ class Sentencizer: #from NLPTools
         self._index = 0
         self._stopwords = [line.replace('\n', '') for line in open("stopwords.txt", 'r', encoding='utf-8').readlines()]
         self.vocab = set()
+        self.vocab_freq = {}
+        self.vocab_freq_sorted = {}
 
     def sentencize(self, input_line):
         work_sentence = input_line.strip()
@@ -50,7 +53,14 @@ class Sentencizer: #from NLPTools
             work_sentence = []
             for w in sentences[i]:
                 w = w.strip(string.punctuation)
-                if (w != '' and w not in self._stopwords and not w.isdigit()): work_sentence.append(w)
+                if (w != '' and w not in self._stopwords and not w.isdigit()):
+                    work_sentence.append(w)
+
+                    if w in self.vocab_freq:
+                        self.vocab_freq[w] += 1
+                        continue
+                        # print (word, vocab[word])
+                    self.vocab_freq[w] = 1
 
             if (len(work_sentence) > 0):
                 #print(work_sentence)
@@ -82,6 +92,7 @@ class Sentencizer: #from NLPTools
 
         f.close();
         self.vocab = sorted(self.vocab)
+        self.vocab_freq_sorted = sorted(self.vocab_freq.items(), key=itemgetter(1))
 
 sentences = """We are about to study the idea of computational process.
  Computational processes are abstract beings that inhabit computers.
@@ -93,7 +104,7 @@ sentences = """We are about to study the idea of computational process.
 tokenizer = Sentencizer()
 tokenizer.sentencize(sentences)
 #tokenizer.readFile("train-nn.txt")
-#print(tokenizer.vocab)
+#print(tokenizer.vocab_freq_sorted)
 
 epochs = 100
 vocab_size = len(tokenizer.vocab)

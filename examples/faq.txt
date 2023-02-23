@@ -1,0 +1,21 @@
+
+import re
+import numpy as np
+import string
+import pandas as pd
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+from operator import itemgetter
+
+###########################################################
+
+keys = ['A', 'B', 'C']
+values = [1, 2, 3]
+ 
+dictionary = {keys[i]: values[i] for i in range(len(keys))}
+
+dictionary = {keys[i]: 0 for i in range(len(keys))}
+
+###########################################################
+
+
