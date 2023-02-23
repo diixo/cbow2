@@ -31,6 +31,11 @@ word = predict(['we', 'are', 'to', 'study'])
 ### Output: 
 **word** =`'about'`
 
+Results of **train-nn.txt**, embedded layer_size=30, data.size=1650.
+<div align="left">
+  <img src="/examples/Figure2.png">
+</div>
+
 # Reference
 
 [nlp-starter-continuous-bag-of-words-cbow](https://www.kaggle.com/code/alincijov/nlp-starter-continuous-bag-of-words-cbow)
