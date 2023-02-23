@@ -95,7 +95,7 @@ In this study, our proposed TCRE model is illustrated in Algorithm. The inputs o
 
 The higher the score of a word in a cluster, the more important that word is in the cluster. For each cluster, the TCRE model selects the top words with the highest scores as indication words. The explanation results can then be used to measure the quality of the clustering results and help a user understand the semantics of a cluster partition.
 
-###################################################################################
+#########################################
 Algorithm.   Procedure of the TCRE Model.
 
 Input : Corpus is the corpus, and clusterResult is the pseudo-label list.
@@ -113,7 +113,7 @@ weight-List is the weight list whose length is the number of labels.
 Let weight List is Classifier weights.
 
  Map into indication words and  Append index Words into index Words List and return index Words List.
-##############################
+#########################################
 
 5. Computational Complexity Analysis
 
@@ -128,14 +128,14 @@ We first introduce five corpora and three evaluation metrics. Then, classic text
 6.1. Datasets
 We evaluate our model on five corpora: AG news , DBpedia , Yahoo, Answers , R2 , and R5 . The corpora AG news , DBpedia , and Yahoo Answers were collected and constructed. Because of the large sizes of the three corpora, directly performing experiments on the original corpora would be time-consuming; therefore, we adopted abbreviated versions of the datasets. Following previous research, we randomly selected 1000 instances for each class in each dataset. In our preliminary experiments, we found that the sampled balanced corpora resulted in a performance similar to that achieved with the original data. The corpora R2 and R5 were extracted from the corpus Reuters-21578 by us. We introduce these corpora as follows:
 
-AG news is a news categorization corpus. constructed this corpus by choosing the top four categories from AG corpus of news articles on the web. These texts are gathered from more than 2000 news sources by ComeToMyHead for more than one year of activity. Each text in the AG news corpus includes the original title and content. There are four categories in the corpus: World , Sports , Business , and Sci/Tech .
+AG news is a news categorization corpus. constructed this corpus by choosing the top four categories from AG corpus of news articles on the web. These texts are gathered from more than 2000 news sources by ComeToMyHead for more than one year of activity. Each text in the AG news corpus includes the original title and content. There are four categories in the corpus: World, Sports, Business and Sci/Tech.
 
 
-The DBpedia ontology classification corpus was constructed by selecting several classes from the knowledge base DBpedias ontology by Zhang. Each text snippet in the corpus is an entity description, and its label is the entity ontological class label. The corpus contains non-overlapping classes: Company , Educational Institution , Artist , Athlete , Office Holder , Means of Transportation , Building , Natural Place , Village , Animal , Plant , Album , Film , and Written Work .
+The DBpedia ontology classification corpus was constructed by selecting several classes from the knowledge base DBpedias ontology by Zhang. Each text snippet in the corpus is an entity description, and its label is the entity ontological class label. The corpus contains non-overlapping classes: Company, Educational Institution, Artist, Athlete, Office Holder, Means of Transportation, Building, Natural Place, Village, Animal, Plant, Album, Film, and Written Work .
 
-Yahoo Answers is a topic classification corpus extracted from the Yahoo Answers Comprehensive Questions and Answers version dataset through the Yahoo Webscope program by Zhang. Each text in the corpus includes a question and its corresponding answers. There are ten categories: Society&Culture , Science&Mathematics , Health , Education&Reference , Sports , Business&Finance , Entertainment&Music , Family&Relationships , Computer&Internet , and Politics&Government .
+Yahoo Answers is a topic classification corpus extracted from the Yahoo Answers Comprehensive Questions and Answers version dataset through the Yahoo Webscope program by Zhang. Each text in the corpus includes a question and its corresponding answers. There are ten categories: Society&Culture, Science&Mathematics, Health, Education&Reference, Sports, Business&Finance, Entertainment&Music, Family&Relationships, Computer&Internet, and Politics&Government.
 
-The Reuters-21578 corpus2 was initially collected and labeled by the Carnegie Group and Reuters. The corpus contains 21578 documents grouped into 135 categories. Different from other corpora, this corpus is highly unbalanced. The largest category includes thousands of items, whereas the smallest category has only a few. Following previous research, we constructed two clustering corpora, R2 and R5 , which include the two and five largest categories, respectively. The categories in corpus R2 are earn and acq . The categories in corpus R5 are earn , acq , cude , trade , and money-fx . In the following experiments, we use these two unbalanced corpora to evaluate our model.
+The Reuters-21578 corpus2 was initially collected and labeled by the Carnegie Group and Reuters. The corpus contains 21578 documents grouped into 135 categories. Different from other corpora, this corpus is highly unbalanced. The largest category includes thousands of items, whereas the smallest category has only a few. Following previous research, we constructed two clustering corpora, R2 and R5, which include the two and five largest categories, respectively. The categories in corpus R2 are earn and acq. The categories in corpus R5 are earn, acq, cude, trade, and money-fx. In the following experiments, we use these two unbalanced corpora to evaluate our model.
 
 
 6.2. Evaluation Metrics
