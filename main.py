@@ -108,8 +108,8 @@ tokenizer.readFile("train-nn.txt")
 
 epochs = 100
 vocab_size = len(tokenizer.vocab)
-embed_dim = 30  #sqrt(tokenizer.sentences.sz)
-context_size = 2 # or 1, is half of context-window: [(2*context_size), target]
+embed_dim = 80  #sqrt(tokenizer.sentences.sz)
+context_wnd = 3 # 2, 3 or 4: [(context_wnd), target]
 
 word_to_ix = {word: i for i, word in enumerate(tokenizer.vocab)}
 ix_to_word = {i: word for i, word in enumerate(tokenizer.vocab)}
@@ -119,25 +119,44 @@ data = []
 
 ############
 for sentence in tokenizer.sentences:
-    if (context_size == 2):
+    if (context_wnd == 4):
         for i in range(2, len(sentence) - 2):
             context = [sentence[i - 2], sentence[i - 1], sentence[i + 1], sentence[i + 2]]
             target = sentence[i]
             data.append((context, target))
 
-    if (context_size == 1):
-        for i in range(0, len(sentence) - 2):
-            context = [sentence[i + 1], sentence[i + 2]]
-            target = sentence[i]
+    if (context_wnd == 3):
+        for i in range(0, len(sentence) - 3):
+            context = [sentence[i], sentence[i + 1], sentence[i + 2]]
+            target = sentence[i + 3]
             data.append((context, target))
+            #print("#" + target + " : " + context[0] + ", " + context[1] + ", " + context[2])
 
-            if (i > 0):
-                context = [sentence[i - 1], sentence[i + 1]]
+            context = [sentence[i], sentence[i + 1], sentence[i + 3]]
+            target = sentence[i + 2]
+            data.append((context, target))
+            #print("#" + target + " : " + context[0] + ", " + context[1] + ", " + context[2])
+
+            context = [sentence[i], sentence[i + 2], sentence[i + 3]]
+            target = sentence[i + 1]
+            data.append((context, target))
+            #print("#" + target + " : " + context[0] + ", " + context[1] + ", " + context[2])
+
+    if (context_wnd == 2):
+        for i in range(0, len(sentence) - 2):
+            context = [sentence[i], sentence[i + 1]]
+            target = sentence[i + 2]
+            data.append((context, target))
+            #print("#" + target + " : " + sentence[i + 1] + ", " + sentence[i + 2])
+
+            if (i == 10000):
+                context = [sentence[i + 1], sentence[i + 2]]
                 target = sentence[i]
                 data.append((context, target))
-
+                #print("#" + target + " : " + sentence[i] + ", " + sentence[i + 1])
 ############
 print(str(len(data)))
+#print(str(len(tokenizer.sentences)))
 
 # Embeddings
 embeddings = np.random.random_sample((vocab_size, embed_dim))
@@ -187,7 +206,7 @@ def optimize(theta, grad, lr = 0.03):
     return theta
 
 # Training:
-theta = np.random.uniform(-1, 1, (2 * context_size * embed_dim, vocab_size))
+theta = np.random.uniform(-1, 1, (context_wnd * embed_dim, vocab_size))
 
 epoch_losses = {}
 success = []
