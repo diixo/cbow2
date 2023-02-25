@@ -108,7 +108,7 @@ tokenizer.readFile("train-nn.txt")
 
 epochs = 100
 vocab_size = len(tokenizer.vocab)
-embed_dim = 80  #sqrt(tokenizer.sentences.sz)
+embed_dim = 100  #sqrt(tokenizer.sentences.sz)
 context_wnd = 3 # 2, 3 or 4: [(context_wnd), target]
 
 word_to_ix = {word: i for i, word in enumerate(tokenizer.vocab)}
@@ -234,6 +234,7 @@ for epoch in range(epochs):
 
     epoch_losses[epoch] = losses
     success.append(hits/len(data)*100.0)
+    print("<< " + str(epoch) + " : " + str(hits/len(data)*100.0))
 
 # Analyze: Plot loss/epoch
 def plot_loss():
