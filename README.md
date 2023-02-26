@@ -39,6 +39,6 @@ Results of **train-nn.txt**, embedded layer_size=30, data.size=1650.
 # Reference
 
 - [nlp-starter-continuous-bag-of-words-cbow](https://www.kaggle.com/code/alincijov/nlp-starter-continuous-bag-of-words-cbow)
-- [SentEval](https://github.com/diixo/SentEval)
-- [InferSent](https://github.com/diixo/InferSent)
+- [SentEval](https://github.com/diixo/SentEval) by Facebook
+- [InferSent](https://github.com/diixo/InferSent) by Facebook
 - [Mini-Word2Vec](https://github.com/diixo/MiniWord2Vec)
