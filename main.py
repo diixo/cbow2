@@ -63,7 +63,8 @@ class Sentencizer: #from NLPTools
                     self.vocab_freq[w] = 1
 
             if (len(work_sentence) > 0):
-                #print(work_sentence)
+                #print(' '.join(sentences[i]))
+                #print(' '.join(work_sentence))
                 self.sentences.append(work_sentence)
                 self.vocab.update(set(work_sentence))
         #print(self.vocab)
