@@ -42,3 +42,4 @@ Results of **train-nn.txt**, embedded layer_size=30, data.size=1650.
 - [SentEval](https://github.com/diixo/SentEval) by Facebook
 - [InferSent](https://github.com/diixo/InferSent) by Facebook
 - [Mini-Word2Vec](https://github.com/diixo/MiniWord2Vec)
+- [CBOW Is Not All You Need: Combining CBOW with the Compositional Matrix Space Model](https://paperswithcode.com/paper/cbow-is-not-all-you-need-combining-cbow-with) with [word2mat](https://github.com/diixo/word2mat)
