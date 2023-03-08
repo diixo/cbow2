@@ -7,7 +7,6 @@ above
 accordingly
 across
 actually
-additionally
 aforetime
 after
 aftertime
@@ -493,6 +492,7 @@ whereabouts
 whereafter
 whereas
 whereby
+wherefor
 wherefore
 wherefrom
 wherein
@@ -505,6 +505,7 @@ whether
 which
 which's
 whichever
+whichsoever
 while
 whither
 who
