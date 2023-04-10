@@ -38,6 +38,7 @@ Results of **train-nn.txt**, embedded layer_size=30, data.size=1650.
 
 # Reference
 
+- [NLPTools with text preprocessing](https://github.com/diixo/NLPTools)
 - [nlp-starter-continuous-bag-of-words-cbow](https://www.kaggle.com/code/alincijov/nlp-starter-continuous-bag-of-words-cbow)
 - [SentEval](https://github.com/diixo/SentEval) by Facebook
 - [InferSent](https://github.com/diixo/InferSent) by Facebook
