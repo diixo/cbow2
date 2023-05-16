@@ -212,25 +212,30 @@ theta = np.random.uniform(-1, 1, (context_wnd * embed_dim, vocab_size))
 epoch_losses = {}
 success = []
 
+##########################
+data_ids = []
+for context, target in data:
+    context_ids = np.array([word_to_ix[w] for w in context])
+    target_ids = np.array([word_to_ix[target]])
+    data_ids.append((context_ids, target_ids))
+##########################
 for epoch in range(epochs):
     losses = []
     hits = 0
 
-    for context, target in data:
-        context_idxs = np.array([word_to_ix[w] for w in context])
-        preds = forward(context_idxs, theta)
+    for context_ids, target_ids in data_ids:
 
-        target_idxs = np.array([word_to_ix[target]])
-        loss = NLLLoss(preds[-1], target_idxs)
+        preds = forward(context_ids, theta)
+        loss = NLLLoss(preds[-1], target_ids)
 
         losses.append(loss)
 
-        grad = backward(preds, theta, target_idxs)
+        grad = backward(preds, theta, target_ids)
         theta = optimize(theta, grad, lr=0.03)
 
         ##########################################
         word_id = np.argmax(preds[-1])
-        if (word_id == word_to_ix[target]): hits += 1
+        if (word_id == target_ids): hits += 1
         ##########################################
 
     epoch_losses[epoch] = losses
