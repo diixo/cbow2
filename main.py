@@ -53,7 +53,7 @@ class Sentencizer: #from NLPTools
             work_sentence = []
             for w in sentences[i]:
                 w = w.strip(string.punctuation)
-                if (w != '' and w not in self._stopwords and not w.isdigit()):
+                if ((w != '') and (w not in self._stopwords) and not w.isdigit()):
                     work_sentence.append(w)
 
                     if w in self.vocab_freq:
@@ -91,7 +91,7 @@ class Sentencizer: #from NLPTools
             count+=1
             self.sentencize(line)
 
-        f.close();
+        f.close()
         self.vocab = sorted(self.vocab)
         self.vocab_freq_sorted = sorted(self.vocab_freq.items(), key=itemgetter(1), reverse=True)
 
