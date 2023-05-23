@@ -105,12 +105,11 @@ sentences = """We are about to study the idea of computational process.
 tokenizer = Sentencizer()
 #tokenizer.sentencize(sentences)
 tokenizer.readFile("train-nn.txt")
-#print(tokenizer.vocab_freq_sorted)
 
-epochs = 100
+epochs = 50
 vocab_size = len(tokenizer.vocab)
-embed_dim = 100  #sqrt(tokenizer.sentences.sz)
-context_wnd = 3 # 2, 3 or 4: [(context_wnd), target]
+embed_dim = 50  #sqrt(tokenizer.sentences.sz)
+context_wnd = 4 # 2, 3 or 4: [(context_wnd), target]
 
 word_to_ix = {word: i for i, word in enumerate(tokenizer.vocab)}
 ix_to_word = {i: word for i, word in enumerate(tokenizer.vocab)}
@@ -126,10 +125,16 @@ for sentence in tokenizer.sentences:
             target = sentence[i]
             data.append((context, target))
 
+        for i in range(0, len(sentence) - 4):
+            break
+            context = [sentence[i + 1], sentence[i + 2], sentence[i + 3], sentence[i + 4]]
+            target = sentence[i]
+            data.append((context, target))
+
     if (context_wnd == 3):
         for i in range(0, len(sentence) - 3):
-            context = [sentence[i], sentence[i + 1], sentence[i + 2]]
-            target = sentence[i + 3]
+            context = [sentence[i + 1], sentence[i + 2], sentence[i + 3]]
+            target = sentence[i]
             data.append((context, target))
             #print("#" + target + " : " + context[0] + ", " + context[1] + ", " + context[2])
 
@@ -150,17 +155,15 @@ for sentence in tokenizer.sentences:
             data.append((context, target))
             #print("#" + target + " : " + sentence[i + 1] + ", " + sentence[i + 2])
 
-            if (i == 10000):
-                context = [sentence[i + 1], sentence[i + 2]]
-                target = sentence[i]
-                data.append((context, target))
-                #print("#" + target + " : " + sentence[i] + ", " + sentence[i + 1])
 ############
-print(str(len(data)))
+print("Tokens:", str(len(data)))
 #print(str(len(tokenizer.sentences)))
 
 # Embeddings
 embeddings = np.random.random_sample((vocab_size, embed_dim))
+
+# Training:
+theta = np.random.uniform(-1, 1, (context_wnd * embed_dim, vocab_size))
 
 # Linear-model
 def linear(m, theta):
@@ -205,9 +208,7 @@ def backward(preds, theta, target_idxs):
 def optimize(theta, grad, lr = 0.03):
     theta -= grad * lr
     return theta
-
-# Training:
-theta = np.random.uniform(-1, 1, (context_wnd * embed_dim, vocab_size))
+##########################
 
 epoch_losses = {}
 success = []
@@ -239,8 +240,8 @@ for epoch in range(epochs):
         ##########################################
 
     epoch_losses[epoch] = losses
-    success.append(hits/len(data)*100.0)
-    print("<< " + str(epoch) + " : " + str(hits/len(data)*100.0))
+    success.append(hits/len(data) * 100.0)
+    print("<< " + str(epoch) + " : " + str(hits/len(data) * 100.0))
 
 # Analyze: Plot loss/epoch
 def plot_loss():
