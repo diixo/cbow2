@@ -31,7 +31,7 @@ word = predict(['we', 'are', 'to', 'study'])
 ### Output: 
 **word** =`'about'`
 
-Results of **train-nn.txt**, **embedded_size=50**, **windowed_sz=4**, data.size=1650.
+Results of **train-nn.txt**, **embedded_size=50**, **windowed_sz=4**, input data tokens.size=1650
 <div align="left">
   <img src="/examples/Figure2.png">
 </div>
