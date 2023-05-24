@@ -34,8 +34,8 @@ word = predict(['we', 'are', 'to', 'study'])
 Results of **train-nn.txt**, embedded_size=**100**, windowed_sz=**4**, input data.size=**3298**
 
 ```python
-<< loss : 98.18181818181819
-sucess: 94.96969696969697
+<< loss : 98.180715
+<< sucess: 95.451788
 ```
 
 <div align="left">
