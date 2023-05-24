@@ -31,7 +31,8 @@ word = predict(['we', 'are', 'to', 'study'])
 ### Output: 
 **word** =`'about'`
 
-Results of **train-nn.txt**, embedded_size=**100**, windowed_sz=**4**, input data.size=**3298**
+### Dataset:
+Training on **train-nn.txt**, embedded_size=**100**, windowed_sz=**4**, input data.size=**3298**
 
 ```python
 << loss : 98.180715
