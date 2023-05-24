@@ -108,7 +108,7 @@ tokenizer.readFile("train-nn.txt")
 
 epochs = 50
 vocab_size = len(tokenizer.vocab)
-embed_dim = 50  #sqrt(tokenizer.sentences.sz)
+embed_dim = 50  # 2*sqrt(tokenizer.sentences.sz)
 context_wnd = 4 # 2, 3 or 4: [(context_wnd), target]
 
 word_to_ix = {word: i for i, word in enumerate(tokenizer.vocab)}
@@ -126,7 +126,6 @@ for sentence in tokenizer.sentences:
             data.append((context, target))
 
         for i in range(0, len(sentence) - 4):
-            break
             context = [sentence[i + 1], sentence[i + 2], sentence[i + 3], sentence[i + 4]]
             target = sentence[i]
             data.append((context, target))
@@ -280,20 +279,11 @@ def verify():
         if (word_id == target_id) : success += 1
     print("sucess:", str(100.0 * success/sz))
 
-def accuracy():
-    wrong = 0
-    for context, target in data:
-        if (predict(context) != target):
-            wrong += 1
-    return (1 - (wrong / len(data)))
-
 plot_loss()
 plot_precision()
 
 verify()
 
 # (['evolve', 'processes', 'abstract', 'things'], 'manipulate')
-w = predict(['evolve', 'processes', 'abstract', 'things'])
-print(w)
-
-print(accuracy())
+#w = predict(['evolve', 'processes', 'abstract', 'things'])
+#print(w)
