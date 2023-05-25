@@ -108,7 +108,7 @@ tokenizer.readFile("train-nn.txt")
 
 epochs = 50
 vocab_size = len(tokenizer.vocab)
-embed_dim = 50  # 2*sqrt(tokenizer.sentences.sz)
+embed_dim = 100  # 2 * sqrt(tokenizer.sentences.sz)
 context_wnd = 4 # 2, 3 or 4: [(context_wnd), target]
 
 word_to_ix = {word: i for i, word in enumerate(tokenizer.vocab)}
