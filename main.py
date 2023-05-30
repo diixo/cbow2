@@ -11,6 +11,10 @@ from operator import itemgetter
 
 from subprocess import check_output
 
+epochs = 50
+embed_dim = 100  # 2 * sqrt(tokenizer.sentences.sz)
+context_wnd = 4 # 2, 3 or 4: [(context_wnd), target]
+
 # - the word embeddings as inputs (idx)
 # - the linear model as the hidden layer
 # - the log_softmax as the output
@@ -106,10 +110,7 @@ tokenizer = Sentencizer()
 #tokenizer.sentencize(sentences)
 tokenizer.readFile("train-nn.txt")
 
-epochs = 50
 vocab_size = len(tokenizer.vocab)
-embed_dim = 100  # 2 * sqrt(tokenizer.sentences.sz)
-context_wnd = 4 # 2, 3 or 4: [(context_wnd), target]
 
 word_to_ix = {word: i for i, word in enumerate(tokenizer.vocab)}
 ix_to_word = {i: word for i, word in enumerate(tokenizer.vocab)}
@@ -137,15 +138,19 @@ for sentence in tokenizer.sentences:
             data.append((context, target))
             #print("#" + target + " : " + context[0] + ", " + context[1] + ", " + context[2])
 
-            context = [sentence[i], sentence[i + 1], sentence[i + 3]]
-            target = sentence[i + 2]
-            data.append((context, target))
+            #context = [sentence[i], sentence[i + 1], sentence[i + 3]]
+            #target = sentence[i + 2]
+            #data.append((context, target))
             #print("#" + target + " : " + context[0] + ", " + context[1] + ", " + context[2])
 
-            context = [sentence[i], sentence[i + 2], sentence[i + 3]]
-            target = sentence[i + 1]
-            data.append((context, target))
+            #context = [sentence[i], sentence[i + 2], sentence[i + 3]]
+            #target = sentence[i + 1]
+            #data.append((context, target))
             #print("#" + target + " : " + context[0] + ", " + context[1] + ", " + context[2])
+        if len(sentence) > 3:
+            context = [sentence[-4], sentence[-3], sentence[-2]]
+            target = sentence[-1]
+            data.append((context, target))
 
     if (context_wnd == 2):
         for i in range(0, len(sentence) - 2):
@@ -179,18 +184,20 @@ def NLLLoss(logs, targets):
     return -out.sum()/len(out)
 
 
-def log_softmax_crossentropy_with_logits(logits, target):
-    out = np.zeros_like(logits)
-    out[np.arange(len(logits)), target] = 1
+def softmax_crossentropy_with_logits(logits, target):
+
+    one_hot = np.zeros_like(logits)
+    one_hot[np.arange(len(logits)), target] = 1
 
     softmax = np.exp(logits) / np.exp(logits).sum(axis=-1, keepdims=True)
 
-    return (-out + softmax) / logits.shape[0]
+    return (-one_hot + softmax) / logits.shape[0]
 
 # Forward propagation
 def forward(context_idxs, theta):
     m = embeddings[context_idxs].reshape(1, -1)
     n = linear(m, theta)
+
     o = log_softmax(n)
 
     return m, n, o
@@ -199,7 +206,7 @@ def forward(context_idxs, theta):
 def backward(preds, theta, target_idxs):
     m, n, o = preds
 
-    dlog = log_softmax_crossentropy_with_logits(n, target_idxs)
+    dlog = softmax_crossentropy_with_logits(n, target_idxs)
     dw = m.T.dot(dlog)
 
     return dw
