@@ -184,7 +184,7 @@ def NLLLoss(logs, targets):
     return -out.sum()/len(out)
 
 
-def softmax_crossentropy_with_logits(logits, target):
+def grad_softmax_crossentropy_with_logits(logits, target):
 
     one_hot = np.zeros_like(logits)
     one_hot[np.arange(len(logits)), target] = 1
@@ -206,7 +206,7 @@ def forward(context_idxs, theta):
 def backward(preds, theta, target_idxs):
     m, n, o = preds
 
-    dlog = softmax_crossentropy_with_logits(n, target_idxs)
+    dlog = grad_softmax_crossentropy_with_logits(n, target_idxs)
     dw = m.T.dot(dlog)
 
     return dw
