@@ -53,3 +53,4 @@ Training on **train-nn.txt**, embedded_size=**100**, windowed_sz=**4**, input da
 - [CBOW Is Not All You Need: Combining CBOW with the Compositional Matrix Space Model](https://paperswithcode.com/paper/cbow-is-not-all-you-need-combining-cbow-with) with [word2mat](https://github.com/diixo/word2mat)
 - [Context encoders as a simple but powerful extension of word2vec](https://paperswithcode.com/paper/context-encoders-as-a-simple-but-powerful)
 - [Corrected CBOW Performs as well as Skip-gram](https://paperswithcode.com/paper/koan-a-corrected-cbow-implementation) + Dataset [C4 (Colossal Clean Crawled Corpus)](https://paperswithcode.com/dataset/c4) to [download](https://zenodo.org/record/5542319) for repo: [https://github.com/bloomberg/koan](https://github.com/diixo/koan)
+- [CBOW: nlp-starter-logsoftmax-nlloss-cross-entropy](https://github.com/viix-co/nlp-starter-logsoftmax-nlloss-cross-entropy)
